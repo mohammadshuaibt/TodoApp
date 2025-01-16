@@ -17,7 +17,7 @@ function Tform({fetchData}) {
 
     const postTodo = async () => {
         try {
-        await axios.post('http://127.0.0.1:8000/todo/', newTodo);
+        await axios.post('http://127.0.0.1:8000/api/todo/', newTodo);
         fetchData();
         setNewTodo({'body': ""})
         } catch(error) {

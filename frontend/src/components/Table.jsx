@@ -25,8 +25,8 @@ function Table({ todo, newTodo, loading }) {
 
     const handleDelete = async (id) => {
         try{
-        console.log("Deleting todo with ID:", id);
-        await axios.delete(`http://127.0.0.1:8000/todo/${id}/`);
+        // console.log("Deleting todo with ID:", id);
+        await axios.delete(`http://127.0.0.1:8000/api/todo/${id}/`);
         const newList = todo.filter(element => element.id !== id);
         newTodo(newList);
         }
@@ -38,7 +38,7 @@ function Table({ todo, newTodo, loading }) {
 
     const handleEdit = async (id,value) => {
         try{
-            const response = await axios.patch(`http://127.0.0.1:8000/todo/${id}/`, value)
+            const response = await axios.patch(`http://127.0.0.1:8000/api/todo/${id}/`, value)
             const newList = todo.map(element => element.id === id ? response.data : element)
             newTodo(newList)
         }
