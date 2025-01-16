@@ -1,39 +1,40 @@
+function Table({ todo, loading }) {
+    if (loading) {
+        return <p>Loading...</p>; // Show loading state
+    }
 
+    if (!Array.isArray(todo)) {
+        return <p>No todos available.</p>; // Handle case where todo is not an array
+    }
 
-function Table() {
-
-    const thcss = 'p-3'
-    const tdcss = "text-center p-3"
     return (
-    <>
         <div className="container">
             <table className="table table-bordered table-striped text-center">
                 <thead>
                     <tr>
-                        <th className={thcss}>CheckBox</th>
-                        <th className={thcss}>Todo Item</th>
-                        <th className={thcss}>Status</th>
-                        <th className={thcss}>Date Created</th>
-                        <th className={thcss}>Options</th>
+                        <th className="p-3">CheckBox</th>
+                        <th className="p-3">Todo Item</th>
+                        <th className="p-3">Status</th>
+                        <th className="p-3">Date Created</th>
+                        <th className="p-3">Options</th>
                     </tr>
                 </thead>
-                {/* contents */}
-                
                 <tbody>
-                    <tr>
-                        <td className="text-center p-3">
-                            <input type="checkbox" />
-                        </td>
-                        <td className={tdcss}>Sample Todo Item</td>
-                        <td className={tdcss}>In Progress</td>
-                        <td className={tdcss}>2023-10-01</td>
-                        <td className={tdcss}>Edit | Delete</td>
-                    </tr>
-                    {/* Add more rows as needed */}
+                    {todo.map((item, index) => (
+                        <tr key={index}>
+                            <td className="text-center p-3">
+                                <input type="checkbox" />
+                            </td>
+                            <td className="text-center p-3">{item.body}</td>
+                            <td className="text-center p-3">{item.completed ? 'Completed' : 'Pending'}</td>
+                            <td className="text-center p-3">{item.created_at}</td>
+                            <td className="text-center p-3">Edit | Delete</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
-    </>);
+    );
 }
 
 export default Table;

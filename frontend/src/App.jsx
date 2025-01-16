@@ -5,7 +5,8 @@ import axios from 'axios';
 
 function App() {
 
-  const [todo, newTodo] = useState("")
+  const [todo, newTodo] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData()
@@ -14,9 +15,9 @@ function App() {
   const fetchData = async () => {
     try{
         const response = await axios.get('http://127.0.0.1:8000/todo/')
-        console.log(response);
-        console.log('completed');
-        
+        console.log(response.data);
+        newTodo(response.data)
+        setLoading(false)
         
     } catch(error){
       console.log(error);
@@ -28,7 +29,9 @@ function App() {
     <>
     <h1 className='text-center p-3'>Todo App</h1>
     <TForm />
-    <Table />
+    <Table todo = {todo} 
+            newTodo = {newTodo} 
+            loading = {loading}/>
     </>
   );
 }
