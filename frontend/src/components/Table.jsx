@@ -1,4 +1,22 @@
-function Table({ todo, loading }) {
+import axios from 'axios';
+function Table({ todo, newTodo, loading }) {
+
+    const handleDelete = async (id) => {
+        try{
+        console.log("Deleting todo with ID:", id);
+        await axios.delete(`http://127.0.0.1:8000/todo/${id}/`);
+        const newList = todo.filter(element => element.id !== id);
+        newTodo(newList);
+        }
+        catch(error) {
+            console.log(error);
+            
+        }
+    }
+
+
+
+
     if (loading) {
         return <p>Loading...</p>; // Show loading state
     }
@@ -27,10 +45,13 @@ function Table({ todo, loading }) {
                             </td>
                             <td className="text-center p-3">{item.body}</td>
                             <td className="text-center p-3">
-                                <span className={`p-2 ${item.completed ? `bg-success`: `bg-danger`}`}>{item.completed ? 'Completed' : 'Pending'}</span>
+                                <span>{item.completed ? 'Completed' : 'Pending'}</span>
                             </td>
                             <td className="text-center p-3">{new Date (item.created_at).toLocaleString()}</td>
-                            <td className="text-center p-3">Edit | Delete</td>
+                            <td className="text-center p-3">
+                                <button>Edit</button>
+                                <button className="mx-3 cursor-pointer" onClick={() => handleDelete(item.id)}>Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

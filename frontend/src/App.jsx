@@ -15,7 +15,6 @@ function App() {
   const fetchData = async () => {
     try{
         const response = await axios.get('http://127.0.0.1:8000/todo/')
-        console.log(response.data);
         newTodo(response.data)
         setLoading(false)
         
@@ -28,7 +27,7 @@ function App() {
   return (
     <>
     <h1 className='text-center p-3'>Todo App</h1>
-    <TForm />
+    <TForm fetchData = {fetchData}/>
     <Table todo = {todo} 
             newTodo = {newTodo} 
             loading = {loading}/>
