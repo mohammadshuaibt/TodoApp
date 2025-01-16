@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 function Table({ todo, newTodo, loading }) {
 
     const handleDelete = async (id) => {
@@ -12,6 +14,24 @@ function Table({ todo, newTodo, loading }) {
             console.log(error);
             
         }
+    }
+
+    const handleEdit = async (id,value) => {
+        try{
+            const response = await axios.patch(`http://127.0.0.1:8000/todo/${id}/`, value)
+            const newList = todo.map(element => element.id === id ? response.data : element)
+            newTodo(newList)
+        }
+        catch(error) {
+            console.log(error);
+            
+        }
+    }
+
+    const handleCheckbox = async (id,value) => {
+        handleEdit(id,{
+            'completed' : !value
+        })
     }
 
 
@@ -41,21 +61,26 @@ function Table({ todo, newTodo, loading }) {
                     {todo.map((item, index) => (
                         <tr key={index}>
                             <td className="text-center p-3">
-                                <input type="checkbox" />
+                                <input type="checkbox" defaultChecked={item.completed} onClick={() => handleCheckbox(item.id, item.completed)}/>
                             </td>
-                            <td className="text-center p-3">{item.body}</td>
+                            <td className="text-center p-3">
+                                {item.completed ?  <strike>{item.body}</strike>: item.body }
+                            </td>
                             <td className="text-center p-3">
                                 <span>{item.completed ? 'Completed' : 'Pending'}</span>
                             </td>
                             <td className="text-center p-3">{new Date (item.created_at).toLocaleString()}</td>
                             <td className="text-center p-3">
-                                <button>Edit</button>
+                                <button className='cursor-pointer'>Edit</button>
                                 <button className="mx-3 cursor-pointer" onClick={() => handleDelete(item.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+
+
         </div>
     );
 }
