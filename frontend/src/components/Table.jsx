@@ -26,8 +26,10 @@ function Table({ todo, loading }) {
                                 <input type="checkbox" />
                             </td>
                             <td className="text-center p-3">{item.body}</td>
-                            <td className="text-center p-3">{item.completed ? 'Completed' : 'Pending'}</td>
-                            <td className="text-center p-3">{item.created_at}</td>
+                            <td className="text-center p-3">
+                                <span className={`p-2 ${item.completed ? `bg-success`: `bg-danger`}`}>{item.completed ? 'Completed' : 'Pending'}</span>
+                            </td>
+                            <td className="text-center p-3">{new Date (item.created_at).toLocaleString()}</td>
                             <td className="text-center p-3">Edit | Delete</td>
                         </tr>
                     ))}

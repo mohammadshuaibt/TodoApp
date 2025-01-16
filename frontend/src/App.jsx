@@ -6,7 +6,7 @@ import axios from 'axios';
 function App() {
 
   const [todo, newTodo] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchData()
