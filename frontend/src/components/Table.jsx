@@ -1,7 +1,27 @@
 import axios from 'axios';
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+import { Modal, Button } from 'react-bootstrap';
+
 function Table({ todo, newTodo, loading }) {
+
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+
+    const [editText, setEditText] = useState({
+        'body' : ''
+    })
+
+    const [CurrentEditId, setCurrentEditId] = useState(null);
+
+    const handleShow = (id, body) => {
+        setCurrentEditId(id);
+        setEditText({'body':body});
+        setShow(true);
+    }
+    
+    
 
     const handleDelete = async (id) => {
         try{
@@ -26,6 +46,7 @@ function Table({ todo, newTodo, loading }) {
             console.log(error);
             
         }
+        handleClose();
     }
 
     const handleCheckbox = async (id,value) => {
@@ -34,7 +55,20 @@ function Table({ todo, newTodo, loading }) {
         })
     }
 
+    const handleChange = (e) =>{
+        setEditText(prev => ({
+            ...prev,
+            'body' : e.target.value
+        }))
+        // console.log(editText);
+        
+    }
 
+    const handleClick = (id, value) =>{
+        handleEdit(id, {
+            'body': value
+        })
+    }
 
 
     if (loading) {
@@ -71,7 +105,7 @@ function Table({ todo, newTodo, loading }) {
                             </td>
                             <td className="text-center p-3">{new Date (item.created_at).toLocaleString()}</td>
                             <td className="text-center p-3">
-                                <button className='cursor-pointer'>Edit</button>
+                                <button className='cursor-pointer' onClick={() =>handleShow(item.id,item.body)}>Edit</button>
                                 <button className="mx-3 cursor-pointer" onClick={() => handleDelete(item.id)}>Delete</button>
                             </td>
                         </tr>
@@ -79,7 +113,22 @@ function Table({ todo, newTodo, loading }) {
                 </tbody>
             </table>
 
-
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <input type="text" value={editText.body} onChange={(e)=>handleChange(e)} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                    Close
+                    </Button>
+                    <Button variant="primary"  onClick={() => handleEdit(CurrentEditId,editText)}>
+                    Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
         </div>
     );

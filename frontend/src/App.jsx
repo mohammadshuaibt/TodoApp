@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Table from './components/Table.jsx';
 import TForm from './components/Tform.jsx';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
